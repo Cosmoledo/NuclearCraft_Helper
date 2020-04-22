@@ -36,8 +36,6 @@ public class TileEntityBase extends TileEntity {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (facing == EnumFacing.DOWN)
-			return false;
 		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
