@@ -55,7 +55,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 	
-	compile files('./_dep/NuclearCraft-2.18q-1.12.2.jar')
+	compile files('./_dependency/NuclearCraft-2.18q-1.12.2.jar')
 }
 
 processResources {

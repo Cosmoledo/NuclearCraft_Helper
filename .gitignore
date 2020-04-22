@@ -20,4 +20,5 @@ build
 # other
 eclipse
 run
-_dep/NuclearCraft-2.18q-1.12.2
+build.bat
+setup.bat
