@@ -1,0 +1,15 @@
+[{
+  "authorList": ["Cosmoledo97"],
+  "credits": "The author of Nuclearcraft",
+  "dependencies": ["nuclearcraft"],
+  "description": "A little mod with helper blocks for Nuclearcraft.",
+  "logoFile": "",
+  "mcversion": "${mcversion}",
+  "modid": "nuclearcraft_helper",
+  "name": "NuclearCraft Helper",
+  "requiredMods": ["nuclearcraft"],
+  "screenshots": [],
+  "updateUrl": "",
+  "url": "https://minecraft.curseforge.com/projects/nuclearcraft_helper",
+  "version": "${version}"
+}]

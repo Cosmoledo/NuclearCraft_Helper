@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=north": {
+			"model": "nuclearcraft_helper:tiny_compactor"
+		},
+		"facing=east": {
+			"model": "nuclearcraft_helper:tiny_compactor",
+			"y": 90
+		},
+		"facing=south": {
+			"model": "nuclearcraft_helper:tiny_compactor",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "nuclearcraft_helper:tiny_compactor",
+			"y": 270
+		}
+	}
+}
