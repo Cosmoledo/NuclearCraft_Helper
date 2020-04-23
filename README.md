@@ -1,6 +1,6 @@
 # NuclearCraft Helper - Mod for Minecraft 1.12.2
 
-CurseForge Page: [https://www.curseforge.com/minecraft/mc-addons/nuclearcraft-helper](https://www.curseforge.com/minecraft/mc-addons/nuclearcraft-helper)
+CurseForge Page: [https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-helper](https://www.curseforge.com/minecraft/mc-mods/nuclearcraft-helper)
 
 ## Summary
 
