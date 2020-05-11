@@ -1,14 +1,14 @@
 // Blocks
-tile.fuel_crafter.name=È¼ÁÏºÏ³ÉÆ÷
-tile.tiny_compactor.name=Ğ¡×é×°»ú
+tile.fuel_crafter.name=ç‡ƒæ–™åˆæˆå™¨
+tile.tiny_compactor.name=å°ç»„è£…æœº
 
 // Tooltips
-tooltip.fuel_crafter=½«ºËÔ­ÁÏºÏ³ÉÎªºËÈ¼ÁÏ¡£
-tooltip.tiny_compactor=½«Ğ¡´éºËÔ­ÁÏºÏ³ÆÎªÆÕÍ¨µÄºËÔ­ÁÏ¡£
+tooltip.fuel_crafter=å°†æ ¸åŸæ–™åˆæˆä¸ºæ ¸ç‡ƒæ–™ã€‚
+tooltip.tiny_compactor=å°†å°æ’®æ ¸åŸæ–™åˆæˆä¸ºæ™®é€šçš„æ ¸åŸæ–™ã€‚
 
 // Creative Tabs
-itemGroup.nuclear_helper=ºËµçÖúÊÖ
+itemGroup.nuclear_helper=æ ¸ç”µåŠ©æ‰‹
 
 // Guis
-container.fuel_crafter=È¼ÁÏºÏ³ÉÆ÷
-container.tiny_compactor=Ğ¡×é×°»ú
+container.fuel_crafter=ç‡ƒæ–™åˆæˆå™¨
+container.tiny_compactor=å°ç»„è£…æœº
