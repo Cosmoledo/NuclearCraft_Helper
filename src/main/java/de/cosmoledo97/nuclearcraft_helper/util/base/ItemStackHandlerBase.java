@@ -1,8 +1,10 @@
 package de.cosmoledo97.nuclearcraft_helper.util.base;
 
-import nc.Global;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemStackHandlerBase extends ItemStackHandler {
 	public ItemStackHandlerBase(int size) {
@@ -24,6 +26,13 @@ public class ItemStackHandlerBase extends ItemStackHandler {
 	public boolean isItemValid(int slot, ItemStack stack) {
 		if (this.isInOutputRange(slot))
 			return false;
-		return stack.getItem().getRegistryName().getResourceDomain().equals(Global.MOD_ID);
+
+		for (IRecipe r : ContainerBase.recipes)
+			for (Ingredient i : r.getIngredients())
+				for (ItemStack is : i.getMatchingStacks())
+					if (OreDictionary.itemMatches(is, stack, false))
+						return true;
+
+		return false;
 	}
 }

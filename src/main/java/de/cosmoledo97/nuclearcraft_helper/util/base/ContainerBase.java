@@ -30,7 +30,7 @@ public class ContainerBase extends Container {
 		}
 	};
 
-	protected final static ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
+	public final static ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
 	protected TileEntityBase tileentity;
 	protected int slotCount = 0;
 
