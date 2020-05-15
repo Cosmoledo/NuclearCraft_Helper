@@ -11,11 +11,14 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityBase extends TileEntity {
-	private final ItemStackHandlerBase handler = new ItemStackHandlerBase(54);
+	public static final int[] ROW_AMOUNT = {5, 2};
+	public static final int INPUT_AMOUNT = ROW_AMOUNT[0] * 9;
+	private final ItemStackHandlerBase handler = new ItemStackHandlerBase(INPUT_AMOUNT + ROW_AMOUNT[1] * 9);
 	private final String blockName;
 
 	public TileEntityBase(String blockName) {
 		this.blockName = blockName;
+		this.handler.setRecipes(blockName);
 	}
 
 	@Override

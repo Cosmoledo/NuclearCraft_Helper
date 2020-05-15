@@ -18,6 +18,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerBase extends Container {
 	private final static Comparator<ItemStack> SORT_INVENTORY = new Comparator<ItemStack>() {
@@ -30,9 +31,44 @@ public class ContainerBase extends Container {
 		}
 	};
 
-	public final static ArrayList<IRecipe> recipes = new ArrayList<IRecipe>();
+	private ArrayList<IRecipe> recipes;
 	protected TileEntityBase tileentity;
-	protected int slotCount = 0;
+
+	public ContainerBase(InventoryPlayer playerInv, TileEntityBase tileentity) {
+		this.tileentity = tileentity;
+		this.recipes = ((ItemStackHandlerBase) tileentity.getCapabilityHandler()).recipes;
+
+		int index = 0;
+
+		// input
+		for (int y = 0; y < TileEntityBase.ROW_AMOUNT[0]; y++)
+			for (int x = 0; x < 9; x++)
+				this.addSlotToContainer(new SlotItemHandler(tileentity.getCapabilityHandler(), index++, 8 + x * 18, 21 + y * 18));
+
+		// output
+		for (int y = 0; y < TileEntityBase.ROW_AMOUNT[1]; y++)
+			for (int x = 0; x < 9; x++)
+				this.addSlotToContainer(new SlotItemHandler(tileentity.getCapabilityHandler(), index++, 8 + x * 18, 121 + y * 18) {
+					@Override
+					public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
+						ContainerBase.this.extractFromOutput(stack);
+						return super.onTake(thePlayer, stack);
+					}
+				});
+
+		index = 0;
+
+		// hotbar
+		for (int x = 0; x < 9; x++)
+			this.addSlotToContainer(new Slot(playerInv, index++, 8 + x * 18, 231));
+
+		// inventory
+		for (int y = 0; y < 3; y++)
+			for (int x = 0; x < 9; x++)
+				this.addSlotToContainer(new Slot(playerInv, index++, 8 + x * 18, 173 + y * 18));
+
+		this.update();
+	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer playerIn) {
@@ -42,8 +78,8 @@ public class ContainerBase extends Container {
 	protected void extractFromOutput(ItemStack stack) {
 		IRecipe recipe = null;
 
-		for (int r = 0; r < ContainerBase.recipes.size(); r++) {
-			recipe = ContainerBase.recipes.get(r);
+		for (int r = 0; r < this.recipes.size(); r++) {
+			recipe = this.recipes.get(r);
 
 			if (this.isStackSame(stack, recipe.getRecipeOutput()) && this.isRecipeCraftable(recipe))
 				break;
@@ -60,7 +96,7 @@ public class ContainerBase extends Container {
 			for (int k = 0; k < ingredients.length; k++) {
 				ItemStack ingredient = ingredients[k];
 
-				for (int s = 0; s < this.slotCount / 2; s++) {
+				for (int s = 0; s < TileEntityBase.INPUT_AMOUNT; s++) {
 					Slot slot = this.getSlot(s);
 					ItemStack itemstack = slot.getStack();
 
@@ -73,21 +109,6 @@ public class ContainerBase extends Container {
 
 			}
 		}
-	}
-
-	public void init(InventoryPlayer playerInv, TileEntityBase tileentity) {
-		this.tileentity = tileentity;
-
-		// inventory
-		for (int y = 0; y < 3; y++)
-			for (int x = 0; x < 9; x++)
-				this.addSlotToContainer(new Slot(playerInv, x + y * 9 + 9, 8 + x * 18, 173 + y * 18));
-
-		// hotbar
-		for (int x = 0; x < 9; x++)
-			this.addSlotToContainer(new Slot(playerInv, x, 8 + x * 18, 231));
-
-		this.update();
 	}
 
 	private boolean isRecipeCraftable(IRecipe recipe) {
@@ -143,13 +164,13 @@ public class ContainerBase extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (index < this.slotCount) {
+			if (index < this.tileentity.getCapabilityHandler().getSlots()) {
 				// extract from gui
-				if (!this.mergeItemStack(itemstack1, this.slotCount, this.inventorySlots.size(), true))
+				if (!this.mergeItemStack(itemstack1, this.tileentity.getCapabilityHandler().getSlots(), this.inventorySlots.size(), true))
 					return ItemStack.EMPTY;
 				this.extractFromOutput(itemstack);
 			} else // insert into inventory
-			if (!this.mergeItemStack(itemstack1, 0, this.slotCount, false))
+			if (!this.mergeItemStack(itemstack1, 0, this.tileentity.getCapabilityHandler().getSlots(), false))
 				return ItemStack.EMPTY;
 
 			if (itemstack1.isEmpty())
@@ -171,7 +192,7 @@ public class ContainerBase extends Container {
 	private void updateInputSlots() {
 		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
 
-		for (int i = 0; i < this.slotCount / 2; i++) {
+		for (int i = 0; i < TileEntityBase.INPUT_AMOUNT; i++) {
 			Slot slot = this.getSlot(i);
 
 			if (slot != null && slot.getHasStack()) {
@@ -204,21 +225,24 @@ public class ContainerBase extends Container {
 	}
 
 	private void updateOutputSlots() {
-		for (int i = this.slotCount / 2; i < this.slotCount; i++)
+		for (int i = TileEntityBase.INPUT_AMOUNT; i < this.tileentity.getCapabilityHandler().getSlots(); i++)
 			this.getSlot(i).decrStackSize(64);
 
 		List<ItemStack> outputs = new ArrayList<ItemStack>();
 
-		for (int r = 0; r < ContainerBase.recipes.size(); r++) {
-			IRecipe recipe = ContainerBase.recipes.get(r);
+		for (int r = 0; r < this.recipes.size(); r++) {
+			IRecipe recipe = this.recipes.get(r);
 
 			if (this.isRecipeCraftable(recipe))
 				outputs.add(recipe.getRecipeOutput());
 		}
 
 		outputs.sort(SORT_INVENTORY);
-		int offset = this.slotCount / 2;
+		int offset = TileEntityBase.INPUT_AMOUNT;
 		for (ItemStack output : outputs)
-			this.getSlot(offset++).putStack(output.copy());
+			if (offset < this.tileentity.getCapabilityHandler().getSlots())
+				this.getSlot(offset++).putStack(output.copy());
+			else
+				break;
 	}
 }

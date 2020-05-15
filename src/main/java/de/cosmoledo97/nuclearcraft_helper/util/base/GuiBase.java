@@ -1,18 +1,18 @@
-package de.cosmoledo97.nuclearcraft_helper.blocks.fuel_crafter;
+package de.cosmoledo97.nuclearcraft_helper.util.base;
 
-import de.cosmoledo97.nuclearcraft_helper.Reference;
 import nc.gui.NCGui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiFuelCrafter extends NCGui {
-	private static final ResourceLocation TEXTURES = new ResourceLocation(Reference.MODID + ":textures/gui/interface.png");
-	private final TileEntityFuelCrafter tileentity;
+public class GuiBase extends NCGui {
+	private final ResourceLocation texture;
+	private final TileEntityBase tileentity;
 
-	public GuiFuelCrafter(InventoryPlayer player, TileEntityFuelCrafter tileentity) {
-		super(new ContainerFuelCrafter(player, tileentity));
+	public GuiBase(InventoryPlayer playerInv, TileEntityBase tileentity, ResourceLocation texture) {
+		super(new ContainerBase(playerInv, tileentity));
 		this.tileentity = tileentity;
+		this.texture = texture;
 
 		this.xSize = 178;
 		this.ySize = 256;
@@ -21,7 +21,7 @@ public class GuiFuelCrafter extends NCGui {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-		this.mc.getTextureManager().bindTexture(TEXTURES);
+		this.mc.getTextureManager().bindTexture(this.texture);
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 	}
 

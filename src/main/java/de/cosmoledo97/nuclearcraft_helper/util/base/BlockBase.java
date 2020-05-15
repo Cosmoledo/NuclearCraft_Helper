@@ -15,6 +15,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
@@ -42,6 +43,14 @@ public class BlockBase extends Block implements IHasModel {
 
 		BlockInit.BLOCKS.add(this);
 		ItemInit.ITEMS.add(this.getItemByName(name).setRegistryName(name));
+	}
+
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		TileEntityBase tileentity = (TileEntityBase) worldIn.getTileEntity(pos);
+		for (int i = 0; i < TileEntityBase.INPUT_AMOUNT; i++)
+			worldIn.spawnEntity(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), tileentity.getCapabilityHandler().getStackInSlot(i)));
+		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
