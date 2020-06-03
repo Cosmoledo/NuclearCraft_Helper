@@ -13,12 +13,17 @@ import net.minecraftforge.items.IItemHandler;
 public class TileEntityBase extends TileEntity {
 	public static final int[] ROW_AMOUNT = {5, 2};
 	public static final int INPUT_AMOUNT = ROW_AMOUNT[0] * 9;
+	private static NBTTagCompound lastTag;
 	private final ItemStackHandlerBase handler = new ItemStackHandlerBase(INPUT_AMOUNT + ROW_AMOUNT[1] * 9);
 	private final String blockName;
 
 	public TileEntityBase(String blockName) {
 		this.blockName = blockName;
 		this.handler.setRecipes(blockName);
+		if (lastTag != null) {
+			this.handler.deserializeNBT(lastTag);
+			lastTag = null;
+		}
 	}
 
 	@Override
@@ -52,6 +57,10 @@ public class TileEntityBase extends TileEntity {
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.handler.deserializeNBT(compound.getCompoundTag("Inventory"));
+	}
+
+	public void rotate() {
+		lastTag = this.handler.serializeNBT();
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -120,6 +121,18 @@ public class BlockBase extends Block implements IHasModel {
 	@Override
 	public void registerModels() {
 		Main.proxy.registerModel(Item.getItemFromBlock(this), 0);
+	}
+
+	@Override
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileEntityBase) {
+			((TileEntityBase) tileEntity).rotate();
+
+			return super.rotateBlock(world, pos, axis);
+		}
+
+		return false;
 	}
 
 	@Override
